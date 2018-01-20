@@ -1,0 +1,27 @@
+version: '3'
+services:
+    mysql:
+        image: vsamov/mysql-5.1.73
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: dolibarr
+        volumes:
+            - db-data:/var/lib/mysql
+
+    dolibarr:
+        build: .
+        ports:
+            - "1234:80"
+        depends_on:
+            - mysql
+        links: 
+            - mysql
+        volumes:
+            - dolibarr-data:/var/www/html
+volumes:
+  db-data:
+    driver: local
+  dolibarr-data:
+    driver: local
